@@ -1,5 +1,6 @@
-const terser = require('rollup-plugin-terser').terser;
-const pkg = require('./package.json');
+import typescript from '@rollup/plugin-typescript';
+import {terser} from 'rollup-plugin-terser';
+import pkg from './package.json';
 
 const banner = `/*!
  * ${pkg.name} v${pkg.version}
@@ -12,7 +13,7 @@ const fileName = pkg.name.split('/').at(-1);
 
 module.exports = [
   {
-    input: 'build/plugin.js',
+    input: 'src/plugin.ts',
     output: ['.js', '.min.js'].map((suffix) => {
       const config = {
         name: 'ChartPieChartOutlabels',
@@ -42,10 +43,11 @@ module.exports = [
     external: [
       'chart.js',
       'chart.js/helpers',
-    ]
+    ],
+    plugins: [typescript()]
   },
   {
-    input: 'build/plugin.js',
+    input: 'src/plugin.ts',
     output: {
       file: pkg.module,
       banner: banner,
@@ -55,6 +57,7 @@ module.exports = [
     external: [
       'chart.js',
       'chart.js/helpers',
-    ]
+    ],
+    plugins: [typescript()]
   },
 ];
