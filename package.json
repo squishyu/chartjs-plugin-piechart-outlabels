@@ -10,10 +10,10 @@
     "type": "git",
     "url": "https://github.com/energiency/chartjs-plugin-piechart-outlabels"
   },
-  "types": "dist/types",
+  "types": "dist/types/plugin.d.ts",
   "files": [
     "dist/*.js",
-    "dist/*.ts"
+    "dist/types/*.ts"
   ],
   "scripts": {
     "cleanup": "rm -rf build",
