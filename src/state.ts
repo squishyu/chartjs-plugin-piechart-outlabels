@@ -1,6 +1,8 @@
+import {Chart} from "chart.js";
+
 const chartStates = new WeakMap();
 
-export function getState(chart) {
+export function getState(chart: Chart) {
   let state = chartStates.get(chart);
   if (!state) {
     state = {
@@ -12,6 +14,6 @@ export function getState(chart) {
   return state;
 }
 
-export function removeState(chart) {
+export function removeState(chart: Chart) {
   chartStates.delete(chart);
 }

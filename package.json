@@ -10,12 +10,15 @@
     "type": "git",
     "url": "https://github.com/energiency/chartjs-plugin-piechart-outlabels"
   },
+  "types": "dist/types",
   "files": [
-    "dist/*.js"
+    "dist/*.js",
+    "dist/*.ts"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "build:dev": "rollup -c --watch",
+    "cleanup": "rm -rf build",
+    "build": "tsc --outDir build && rollup -c && tsc --emitDeclarationOnly && yarn run cleanup",
+    "build:dev": "tsc --outDir build && rollup -c --watch",
     "lint": "eslint . --ext .js,.ts --cache"
   },
   "resolutions": {
@@ -25,7 +28,7 @@
     "@semantic-release/git": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
-    "chart.js": "^3.8.0",
+    "chart.js": "^4.4.2",
     "eslint": "^7.29.0",
     "eslint-config-chartjs": "^0.3.0",
     "eslint-plugin-es": "^4.1.0",

@@ -12,7 +12,7 @@ const fileName = pkg.name.split('/').at(-1);
 
 module.exports = [
   {
-    input: 'src/plugin.js',
+    input: 'build/plugin.js',
     output: ['.js', '.min.js'].map((suffix) => {
       const config = {
         name: 'ChartPieChartOutlabels',
@@ -45,7 +45,7 @@ module.exports = [
     ]
   },
   {
-    input: 'src/plugin.js',
+    input: 'build/plugin.js',
     output: {
       file: pkg.module,
       banner: banner,

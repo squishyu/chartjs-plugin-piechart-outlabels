@@ -1,9 +1,10 @@
 "use strict";
 
 import { toPadding, resolve } from "chart.js/helpers";
-import positioners from "./positioners.js";
+import positioners from "./positioners";
 import { textSize, parseFont } from "./custom-helpers";
-import customDefaults from "./custom-defaults.js";
+import customDefaults, {OutlabelsPluginConfig} from "./custom-defaults";
+import {Chart} from "chart.js";
 
 var PLUGIN_KEY = customDefaults.PLUGIN_KEY;
 
@@ -17,23 +18,29 @@ function collides(rect, otherRect) {
 }
 
 export default {
-  OutLabel: function (chart, index, ctx, config, context) {
+  OutLabel: function (
+      chart: Chart,
+      index: number,
+      ctx: CanvasRenderingContext2D,
+      config: OutlabelsPluginConfig,
+      context
+  ) {
     // Check whether the label should be displayed
     if (!resolve([config.display, true], context, index)) {
       throw new Error("Label display property is set to false.");
     }
 
     // Init text
-    var value = context.dataset.data[index];
-    var label = context.labels[index];
-    var text = resolve([config.text, customDefaults.text], context, index);
+    const value = context.dataset.data[index];
+    const label = context.labels[index];
+    let text = resolve([config.text, customDefaults.text], context, index) as string
     /* Replace label marker */
     text = text.replace(/%l/gi, label);
 
     /* Replace value marker with possible precision value */
     (text.match(/%v\.?(\d*)/gi) || [])
       .map(function (val) {
-        var prec = val.replace(/%v\./gi, "");
+        let prec = val.replace(/%v\./gi, "");
         if (prec.length) {
           return +prec;
         }
@@ -46,7 +53,7 @@ export default {
     /* Replace percent marker with possible precision value */
     (text.match(/%p\.?(\d*)/gi) || [])
       .map(function (val) {
-        var prec = val.replace(/%p\./gi, "");
+        let prec = val.replace(/%p\./gi, "");
         if (prec.length) {
           return +prec;
         }
@@ -60,7 +67,7 @@ export default {
       });
 
     // Count lines
-    var lines = text.match(/[^\r\n]+/g) || [];
+    let lines = text.match(/[^\r\n]+/g) || [];
 
     // Remove unnecessary spaces
     for (var i = 0; i < lines.length; ++i) {
@@ -102,7 +109,7 @@ export default {
           resolve([config.font, { resizable: true }]),
           ctx.canvas.style.height.slice(0, -2)
         ),
-        padding: toPadding(resolve([config.padding, 0], context, index)),
+        padding: toPadding(resolve([config.padding, 0], context, index) as number),
         textAlign: resolve([config.textAlign, "left"], context, index),
       };
 

@@ -1,10 +1,10 @@
 "use strict";
-import { defaults as ChartDefaults } from "chart.js";
-import customDefaults from "./custom-defaults.js";
-import { getState, removeState } from "./state.js";
-import classes from "./classes.js";
+import { defaults as ChartDefaults, Defaults } from "chart.js";
+import customDefaults from "./custom-defaults";
+import { getState, removeState } from "./state";
+import classes from "./classes";
 
-ChartDefaults.plugins.outlabels = customDefaults;
+(ChartDefaults.plugins as Defaults["plugins"] & { outlabels: typeof customDefaults }).outlabels = customDefaults;
 
 var PLUGIN_KEY = customDefaults.PLUGIN_KEY;
 

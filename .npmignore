@@ -1,8 +1,10 @@
 /.git
 /dist/*.zip
+/build
 /node_modules
 /scripts
 /.vscode
+/.idea
 
 .codeclimate.yml
 .gitignore

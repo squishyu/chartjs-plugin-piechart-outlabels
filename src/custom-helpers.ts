@@ -1,9 +1,9 @@
 'use strict';
 
-import {Chart} from 'chart.js';
+import {CanvasFontSpec, Chart, FontSpec} from 'chart.js';
 import {valueOrDefault, isNullOrUndef, toLineHeight} from 'chart.js/helpers';
 
-function toFontString(font) {
+function toFontString(font: FontSpec) {
   if (!font || isNullOrUndef(font.size) || isNullOrUndef(font.family)) {
     return null;
   }
@@ -14,7 +14,7 @@ function toFontString(font) {
     + font.family;
 }
 
-function textSize(ctx, lines, font) {
+function textSize(ctx: CanvasRenderingContext2D, lines: string[], font: CanvasFontSpec) {
   var items = [].concat(lines);
   var ilen = items.length;
   var prev = ctx.font;
@@ -30,12 +30,12 @@ function textSize(ctx, lines, font) {
   ctx.font = prev;
 
   return {
-    height: ilen * font.lineHeight,
+    height: ilen * (typeof font.lineHeight === "number" ? font.lineHeight : 1), // TODO
     width: width
   };
 }
 
-function adaptTextSizeToHeight(height, minimum, maximum) {
+function adaptTextSizeToHeight(height: number, minimum: number, maximum: number) {
   var size = (height / 100) * 2.5;
   if (minimum && size < minimum) {
     return minimum;
@@ -47,17 +47,17 @@ function adaptTextSizeToHeight(height, minimum, maximum) {
 }
 
 function parseFont(value, height) {
-  var size = valueOrDefault(value.size, Chart.defaults.defaultFontSize);
+  var size = valueOrDefault(value.size, Chart.defaults.font.size);
 
   if (value.resizable) {
     size = adaptTextSizeToHeight(height, value.minSize, value.maxSize);
   }
 
   var font = {
-    family: valueOrDefault(value.family, Chart.defaults.defaultFontFamily),
+    family: valueOrDefault(value.family, Chart.defaults.font.size),
     lineHeight: toLineHeight(value.lineHeight, size),
     size: size,
-    style: valueOrDefault(value.style, Chart.defaults.defaultFontStyle),
+    style: valueOrDefault(value.style, Chart.defaults.font.size),
     weight: valueOrDefault(value.weight, null),
     string: ''
   };
