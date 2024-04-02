@@ -264,14 +264,14 @@ function toFontString(font) {
 function textSize(ctx, lines, font) {
     var items = [].concat(lines);
     var ilen = items.length;
-    var prev = ctx.font;
     var width = 0;
     var i;
+    ctx.save();
     ctx.font = font.string;
     for (i = 0; i < ilen; ++i) {
         width = Math.max(ctx.measureText(items[i]).width, width);
     }
-    ctx.font = prev;
+    ctx.restore();
     return {
         height: ilen * (typeof font.lineHeight === "number" ? font.lineHeight : 1), // TODO
         width: width
@@ -293,10 +293,10 @@ function parseFont(value, height) {
         size = adaptTextSizeToHeight(height, value.minSize, value.maxSize);
     }
     var font = {
-        family: valueOrDefault(value.family, Chart.defaults.font.size),
+        family: valueOrDefault(value.family, Chart.defaults.font.family),
         lineHeight: toLineHeight(value.lineHeight, size),
         size: size,
-        style: valueOrDefault(value.style, Chart.defaults.font.size),
+        style: valueOrDefault(value.style, Chart.defaults.font.style),
         weight: valueOrDefault(value.weight, null),
         string: ''
     };
@@ -377,7 +377,7 @@ var classes = {
             };
             this.stretch = resolve([config.stretch, defaultConfig.stretch], context, index);
             this.horizontalStrechPad = resolve([config.horizontalStrechPad, defaultConfig.horizontalStrechPad], context, index);
-            this.size = textSize(ctx, this.lines, this.style.font);
+            this.size = textSize(this.ctx, this.lines, this.style.font);
             this.offsetStep = this.size.width / 20;
             this.offset = {
                 x: 0,
